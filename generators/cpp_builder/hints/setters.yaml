@@ -5,7 +5,7 @@
 MosaicDefinitionTransaction:
   mosaicId: model::GenerateMosaicId(signer(), m_mosaicNonce)
 
-RegisterNamespaceTransaction:
+NamespaceRegistrationTransaction:
   # disable setter for discriminator
   namespaceType: m_namespaceType
 

@@ -17,11 +17,11 @@ NamespaceMetadataTransaction: metadata
 MosaicDefinitionTransaction: mosaic
 MosaicSupplyChangeTransaction: mosaic
 
-ModifyMultisigAccountTransaction: multisig
+MultisigAccountModificationTransaction: multisig
 
 AddressAliasTransaction: namespace
 MosaicAliasTransaction: namespace
-RegisterNamespaceTransaction: namespace
+NamespaceRegistrationTransaction: namespace
 
 AccountAddressRestrictionTransaction: restriction_account
 AccountMosaicRestrictionTransaction: restriction_account

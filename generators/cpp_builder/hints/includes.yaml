@@ -3,5 +3,5 @@
 MosaicDefinitionTransaction:
   - plugins/txes/mosaic/src/model/MosaicIdGenerator.h
 
-RegisterNamespaceTransaction:
+NamespaceRegistrationTransaction:
   - plugins/txes/namespace/src/model/NamespaceIdGenerator.h
