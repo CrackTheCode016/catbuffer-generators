@@ -1,58 +1,23 @@
 #!/bin/bash
 
+source "$(dirname $0)/../catbuffer/scripts/schema_lists.sh"
+source "$(dirname $0)/../catbuffer/scripts/generate_batch.sh"
+
 if [ "$#" -lt 1 ]; then
 	echo "usage: script <builder> <nis2_root>"
 	exit 1
 fi
 
+# "aggregate/aggregate" tracked by issue #26
+delete=("aggregate/aggregate")
+transaction_inputs_without_aggregate=(${transaction_inputs[@]}/${delete})
+
 builder="$1"
-
-function generate_all {
-	local start_success_color="\033[1;34m"
-	local start_error_color="\033[1;31m"
-	local end_color="\033[0m"
-
-	local inputs=(
-		"account_link/account_link"
-		# "aggregate/aggregate" tracked by issue #26
-		"lock_hash/hash_lock"
-		"lock_secret/secret_lock"
-		"lock_secret/secret_proof"
-		"metadata/account_metadata"
-		"metadata/mosaic_metadata"
-		"metadata/namespace_metadata"
-		"mosaic/mosaic_definition"
-		"mosaic/mosaic_supply_change"
-		"multisig/modify_multisig_account"
-		"namespace/address_alias"
-		"namespace/mosaic_alias"
-		"namespace/register_namespace"
-		"restriction_account/account_address_restriction"
-		"restriction_account/account_mosaic_restriction"
-		"restriction_account/account_operation_restriction"
-		"restriction_mosaic/mosaic_address_restriction"
-		"restriction_mosaic/mosaic_global_restriction"
-		"transfer/transfer"
-	)
-
-	for input in ${inputs[*]}
-	do
-		echo "generating ${input}"
-		python3 main.py --schema ./schemas/${input}.cats --output _generated --generator ${builder} --copyright $1
-		if [ $? -ne 0 ]; then
-			echo "${start_error_color}ERROR: failed generating ${input}${end_color}"
-			exit 1
-		fi
-	done
-
-	echo "${start_success_color}SUCCESS: generation complete with no errors${end_color}"
-}
-
 if [ "$#" -lt 2 ]; then
-	generate_all "./HEADER.inc"
+	PYTHONPATH=".:${PYTHONPATH}" generate_batch ${transaction_inputs_without_aggregate} "catbuffer" ${builder}
 else
 	nis2_root="$2"
-	rm -rf _generated/${builder}
-	generate_all "${nis2_root}/HEADER.inc"
-	cp ./_generated/${builder}/* ${nis2_root}/sdk/src/builders/
+	rm -rf catbuffer/_generated/${builder}
+	PYTHONPATH=".:${PYTHONPATH}" generate_batch ${transaction_inputs_without_aggregate} "catbuffer" ${builder}
+	cp catbuffer/_generated/${builder}/* ${nis2_root}/sdk/src/builders/
 fi
