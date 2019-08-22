@@ -17,9 +17,9 @@ MosaicDefinitionTransaction:
   MosaicProperty: model
 
 MosaicSupplyChangeTransaction:
-  MosaicSupplyChangeDirection: model
+  MosaicSupplyChangeAction: model
 
-ModifyMultisigAccountTransaction:
+MultisigAccountModificationTransaction:
   CosignatoryModification: model
 
 SecretLockTransaction:
@@ -33,8 +33,8 @@ TransferTransaction:
   Mosaic: model
   UnresolvedMosaic: model
 
-RegisterNamespaceTransaction:
-  NamespaceType: model
+NamespaceRegistrationTransaction:
+  NamespaceRegistrationType: model
 
 AccountAddressRestrictionTransaction:
   AccountRestrictionType: model
@@ -48,3 +48,5 @@ AccountOperationRestrictionTransaction:
   AccountRestrictionType: model
   AccountOperationRestrictionModification: model
 
+MosaicGlobalRestrictionTransaction:
+  MosaicRestrictionType: model

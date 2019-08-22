@@ -3,11 +3,11 @@
 # note, currently only fields with kind SIMPLE are supported
 
 MosaicDefinitionTransaction:
-  mosaicId: model::GenerateMosaicId(signer(), m_mosaicNonce)
+  id: model::GenerateMosaicId(signer(), m_nonce)
 
-RegisterNamespaceTransaction:
+NamespaceRegistrationTransaction:
   # disable setter for discriminator
-  namespaceType: m_namespaceType
+  registrationType: m_registrationType
 
   # need to use quoted string with escape characters to break setter onto multiple lines to avoid line length warning
-  namespaceId: "model::GenerateNamespaceId(\n\t\tm_parentId,\n\t\t{{ reinterpret_cast<const char*>(m_name.data()), m_name.size() }})"
+  id: "model::GenerateNamespaceId(m_parentId, {{ reinterpret_cast<const char*>(m_name.data()), m_name.size() }})"

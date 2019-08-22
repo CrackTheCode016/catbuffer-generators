@@ -1,4 +1,4 @@
-from .CppGenerator import CppGenerator, FieldKind
+from .CppGenerator import CppGenerator, FieldKind, capitalize
 
 # note: part of formatting happens in CppGenerator, so whenever literal brace needs
 # to be produced, it needs to be doubled here
@@ -50,7 +50,11 @@ class HeaderGenerator(CppGenerator):
         bound_msg = ''
         if 'condition' in field:
             bound_msg = HeaderGenerator._format_bound(field)
-        self.append('/// ' + comments[field_kind].format(COMMENT=field['comments'], NAME=param_name, BOUND=bound_msg))
+
+        comment_parts = field['comments'].split(' \\note ')
+        self.append('/// ' + comments[field_kind].format(COMMENT=comment_parts[0], NAME=param_name, BOUND=bound_msg))
+        for comment_note in comment_parts[1:]:
+            self.append('/// \\note {0}.'.format(capitalize(comment_note)))
 
     def _generate_setter(self, field_kind, field, full_setter_name, param_name):
         self._add_comment(field_kind, field, param_name)
